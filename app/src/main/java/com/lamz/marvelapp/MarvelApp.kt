@@ -1,12 +1,9 @@
 package com.lamz.marvelapp
 
-import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -16,7 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -30,7 +27,6 @@ import androidx.navigation.navArgument
 import com.lamz.marvelapp.ui.navigation.NavigationItem
 import com.lamz.marvelapp.ui.navigation.Screen
 import com.lamz.marvelapp.ui.screen.detail.DetailScreen
-import com.lamz.marvelapp.ui.screen.favorite.CartScreen
 import com.lamz.marvelapp.ui.screen.home.HomeScreen
 import com.lamz.marvelapp.ui.screen.profile.ProfileScreen
 import com.lamz.marvelapp.ui.theme.MarvelAppTheme
@@ -50,6 +46,7 @@ private fun BottomBar(
 ) {
     NavigationBar(
         modifier = modifier,
+        containerColor = Color.Red
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -59,11 +56,6 @@ private fun BottomBar(
                 title = stringResource(R.string.menu_home),
                 icon = Icons.Default.Home,
                 screen = Screen.Home
-            ),
-            NavigationItem(
-                title = stringResource(R.string.menu_favorite),
-                icon = Icons.Default.Star,
-                screen = Screen.Cart
             ),
             NavigationItem(
                 title = stringResource(R.string.menu_about_us),
@@ -107,7 +99,7 @@ fun MarvelApp(
 
     Scaffold(
         bottomBar = {
-            if (currentRoute != Screen.DetailReward.route) {
+            if (currentRoute != Screen.DetailMarvel.route) {
                 BottomBar(navController)
             }
         },
@@ -121,15 +113,7 @@ fun MarvelApp(
             composable(Screen.Home.route) {
                 HomeScreen(
                     navigateToDetail = { rewardId ->
-                        navController.navigate(Screen.DetailReward.createRoute(rewardId))
-                    }
-                )
-            }
-            composable(Screen.Cart.route) {
-                val context = LocalContext.current
-                CartScreen(
-                    onOrderButtonClicked = { message ->
-                        shareOrder(context, message)
+                        navController.navigate(Screen.DetailMarvel.createRoute(rewardId))
                     }
                 )
             }
@@ -137,7 +121,7 @@ fun MarvelApp(
                 ProfileScreen()
             }
             composable(
-                route = Screen.DetailReward.route,
+                route = Screen.DetailMarvel.route,
                 arguments = listOf(navArgument("rewardId") { type = NavType.LongType }),
             ) {
                 val id = it.arguments?.getLong("rewardId") ?: -1L
@@ -146,16 +130,7 @@ fun MarvelApp(
                     navigateBack = {
                         navController.navigateUp()
                     },
-                    navigateToCart = {
-                        navController.popBackStack()
-                        navController.navigate(Screen.Cart.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
+
                 )
             }
         }
@@ -163,21 +138,6 @@ fun MarvelApp(
 
 }
 
-
-private fun shareOrder(context: Context, summary: String) {
-    val intent = Intent(Intent.ACTION_SEND).apply {
-        type = "text/plain"
-        putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.marvel))
-        putExtra(Intent.EXTRA_TEXT, summary)
-    }
-
-    context.startActivity(
-        Intent.createChooser(
-            intent,
-            context.getString(R.string.marvel)
-        )
-    )
-}
 
 
 

@@ -22,13 +22,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lamz.marvelapp.R
 import com.lamz.marvelapp.ViewModelFactory
 import com.lamz.marvelapp.di.Injection
-import com.lamz.marvelapp.ui.components.RewardItem
+import com.lamz.marvelapp.ui.components.MarvelItem
 
 @Composable
 fun HomeScreen(
@@ -44,11 +45,11 @@ fun HomeScreen(
         SearchBar(
             query = query,
             onQueryChange = viewModel::search,
-            modifier = Modifier.background(MaterialTheme.colorScheme.onBackground)
+            modifier = Modifier.background(color = Color.Red)
         )
 
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(160.dp),
+            columns = GridCells.Adaptive(80.dp),
             contentPadding = PaddingValues(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -58,10 +59,11 @@ fun HomeScreen(
             groupedAvengers.forEach { (_, avengers) ->
 
                 items(avengers) { data ->
-                    RewardItem(
+                    MarvelItem(
                         image = data.image,
                         title = data.title,
-                        requiredPoint = data.requiredPoint,
+                        description = data.description,
+                        history = "",
                         modifier = Modifier.clickable {
                             navigateToDetail(data.id)
                         }

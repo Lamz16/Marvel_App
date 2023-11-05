@@ -3,8 +3,6 @@ package com.lamz.marvelapp.data
 import com.lamz.marvelapp.model.FakeMarvelDataSource
 import com.lamz.marvelapp.model.Marvel
 import com.lamz.marvelapp.model.MarvelData
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 
 class MarvelRepository {
 
@@ -22,33 +20,11 @@ class MarvelRepository {
         return FakeMarvelDataSource.dummyMarvel
     }
 
-    fun getMarvelDataById(MarvelId: Long): MarvelData {
+    fun getMarvelDataById(marvelId: Long): MarvelData {
         return marvels.first {
-            it.marvel.id == MarvelId
+            it.marvel.id == marvelId
         }
     }
-
-    fun updateMarvelData(MarvelId: Long, newCountValue: Int): Flow<Boolean> {
-        val index = marvels.indexOfFirst { it.marvel.id == MarvelId }
-        val result = if (index >= 0) {
-            val MarvelData = marvels[index]
-            marvels[index] =
-                MarvelData.copy(marvel = MarvelData.marvel, count = newCountValue)
-            true
-        } else {
-            false
-        }
-        return flowOf(result)
-    }
-
-//    fun getAddedMarvelData(): Flow<List<MarvelData>> {
-//        return getAllMarvel()
-//            .map { orderRewards ->
-//                orderRewards.filter { orderReward ->
-//                    orderReward.count != 0
-//                }
-//            }
-//    }
 
     fun searchMarvel(query: String): List<Marvel>{
         return FakeMarvelDataSource.dummyMarvel.filter {

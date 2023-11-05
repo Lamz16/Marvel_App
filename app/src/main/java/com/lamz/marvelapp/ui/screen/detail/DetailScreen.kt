@@ -1,7 +1,5 @@
 package com.lamz.marvelapp.ui.screen.detail
 
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,15 +16,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -50,7 +43,7 @@ fun DetailScreen(
         )
     ),
     navigateBack: () -> Unit,
-    navigateToCart: () -> Unit
+
 ) {
     viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
         when (uiState) {
@@ -62,13 +55,10 @@ fun DetailScreen(
                 DetailContent(
                     data.marvel.image,
                     data.marvel.title,
-                    data.marvel.requiredPoint,
-                    data.count,
+                    data.marvel.description,
+                    data.marvel.history,
                     onBackClick = navigateBack,
-                    onAddToCart = { count ->
-                        viewModel.addToCart(data.marvel, count)
-                        navigateToCart()
-                    }
+
                 )
             }
             is UiState.Error -> {}
@@ -80,15 +70,11 @@ fun DetailScreen(
 fun DetailContent(
     image: String,
     title: String,
-    basePoint: Int,
-    count: Int,
+    description: String,
+    history : String,
     onBackClick: () -> Unit,
-    onAddToCart: (count: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var totalPoint by rememberSaveable { mutableStateOf(0) }
-    var orderCount by rememberSaveable { mutableStateOf(count) }
-
     Column(modifier = modifier) {
         Column(
             modifier = Modifier
@@ -125,14 +111,13 @@ fun DetailContent(
                     ),
                 )
                 Text(
-                    text = stringResource(R.string.required_point, basePoint),
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.ExtraBold
-                    ),
+                    text = description,
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Justify,
                     color = MaterialTheme.colorScheme.secondary
                 )
                 Text(
-                    text = stringResource(R.string.lorem_ipsum),
+                    text = history,
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Justify,
                 )
@@ -154,10 +139,9 @@ fun DetailContentPreview() {
         DetailContent(
             "https://pin.it/6vduBFm",
             "Jaket Hoodie Dicoding",
-            1000,
-            1,
+            "1000",
+            "history",
             onBackClick = {},
-            onAddToCart = {}
         )
     }
 }

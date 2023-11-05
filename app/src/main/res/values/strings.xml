@@ -5,11 +5,10 @@
     <string name="back">Back</string>
     <string name="required_point">%d Pts</string>
     <string name="share_message">Hey, I have redeem %1$d rewards in Dicoding with total %2$d Points. Do you want too?</string>
-    <string name="total_order">Total pesanan : %d Pts</string>
     <string name="marvel">Marvel App</string>
     <string name="menu_home">Home</string>
     <string name="menu_favorite">Favorite</string>
-    <string name="menu_about_us">About Us</string>
+    <string name="menu_about_us">About Me</string>
     <string name="add_to_cart">Tambah ke Keranjang : %d Pts</string>
     <string name="search_hero">Search Marvel</string>
 </resources>

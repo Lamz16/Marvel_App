@@ -24,10 +24,4 @@ class DetailRewardViewModel(
             _uiState.value = UiState.Success(repository.getMarvelDataById(rewardId))
         }
     }
-
-    fun addToCart(marvel: Marvel, count: Int) {
-        viewModelScope.launch {
-            repository.updateMarvelData(marvel.id, count)
-        }
-    }
 }

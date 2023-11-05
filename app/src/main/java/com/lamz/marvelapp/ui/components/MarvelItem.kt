@@ -1,6 +1,5 @@
 package com.lamz.marvelapp.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
@@ -9,23 +8,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.lamz.marvelapp.R
 import com.lamz.marvelapp.ui.theme.MarvelAppTheme
 import com.lamz.marvelapp.ui.theme.Shapes
 
 
 @Composable
-fun RewardItem(
+fun MarvelItem(
     image: String,
     title: String,
-    requiredPoint: Int,
+    description: String,
+    history : String,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -48,17 +45,22 @@ fun RewardItem(
             )
         )
         Text(
-            text = stringResource(R.string.required_point, requiredPoint),
+            text = description,
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.secondary
+        )
+        Text(
+            text = history,
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }
 
 @Composable
 @Preview(showBackground = true)
-fun RewardItemPreview() {
+fun MarvelItemPreview() {
     MarvelAppTheme {
-        RewardItem("https://pin.it/6vduBFm", "Falcon", 1000)
+        MarvelItem("https://pin.it/6vduBFm", "Falcon", "1000", "history")
     }
 }
